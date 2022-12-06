@@ -27,7 +27,7 @@ def loadData(filename):
 
     f = open(filename)
     for line in f:
-        line = line.strip()
+        line = line.rstrip()
         lines.append(line)
 
     f.close()
@@ -51,8 +51,8 @@ def main():
 
     args = sys.argv[1:]
     if len(args) != 1:
-        # filename = "/Users/jrork/Documents/Development/advent of code/2022/Day 5/Part 1/stacks.data"
-        filename = "/Users/jrork/Documents/Development/advent of code/2022/Day 5/Part 1/example.data"
+        filename = "/Users/jrork/Documents/Development/advent of code/2022/Day 5/Part 1/stacks.data"
+        # filename = "/Users/jrork/Documents/Development/advent of code/2022/Day 5/Part 1/example.data"
         # print("Usage: " + sys.argv[0] + " inputfile");
         # return
     else:
@@ -71,7 +71,11 @@ def main():
     # Do Part 1 work     
     directions = get_directions(lines)
     stacks = load_stacks(lines)
+    print()
+    print("Starting stacks")
     print_stacks(stacks)
+    stacks = apply_directions(stacks, directions)
+    # print_stacks(stacks)
 
     print()
     answer = "X"
@@ -100,13 +104,27 @@ def get_directions(data):
     return directions
 
 def print_stacks(stacks):
+    tallest_stack_height = 0
+    number_of_stacks = len(stacks)
+    for i in range(len(stacks)-1, -1, -1):
+        current_stack_height = len(stacks[i])
+        if current_stack_height > tallest_stack_height:
+            tallest_stack_height = current_stack_height
+    for i in range(tallest_stack_height-1, -1, -1):
+        for j in range(number_of_stacks):
+            current_stack_height = len(stacks[j])
+            if i < current_stack_height:
+                print(f"[{stacks[j][i]}] ", end="")
+            else:
+                print("    ", end="")
+        print()
+    
+    for i in range(1, number_of_stacks+1):
+        print(f"{i}   ", end="")
+
     print()
-    for row in stacks:
-        print('[', end="")
-        for item in row:
-            print(item, end="] [")
-        print(']')
     return
+
 
 def load_stacks(data):
     row_count = 0
@@ -125,27 +143,37 @@ def load_stacks(data):
     print(f"Length of list is {length_of_list}")
 
     stacks = []
+    for i in range(number_of_stacks):
+        stacks.append([])
 
-    # current_row = row_count;
     for current_row in range(row_count-1, -1, -1):
         str_temp = data[current_row]
         new_str_temp = str_temp.ljust(length_of_list, " ")
 
-        newlist = []
         current_position = 1
+        stack_number = 0
         while current_position < length_of_list:
-            newlist.append(new_str_temp[current_position])
+            value = new_str_temp[current_position]
+            if not str(value).isspace():
+                stacks[stack_number].append(value)
             current_position = current_position + 4
+            stack_number = stack_number + 1
 
-        print(newlist)
-        stacks.append(newlist)
+    return stacks
 
-    # for row_index in range(row_count, -1, -1):
-    #     new_temp = []
-    #     for stack_number in range(0, number_of_stacks):
-    #         new_temp.append('X')
-    #     stacks.append(new_temp)
+def apply_directions(stacks, directions):
+    move_stack = []
+    for direction in directions:
+        print()
+        print("-----------------")
+        from_stack = int(direction[1])
+        number_of_crates = int(direction[0])
+        to_stack = int(direction[2])
+        print(f"Moving {number_of_crates} crate(s) from Stack {from_stack} to {to_stack}\n")
 
+        for i in range(number_of_crates):
+            stacks[to_stack-1].append(stacks[from_stack-1].pop())
+        print_stacks(stacks)
     return stacks
 
 if __name__ == "__main__":
