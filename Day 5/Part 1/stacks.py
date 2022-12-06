@@ -110,6 +110,7 @@ def print_stacks(stacks):
         current_stack_height = len(stacks[i])
         if current_stack_height > tallest_stack_height:
             tallest_stack_height = current_stack_height
+    # print(f"The tallest stack height is {tallest_stack_height}")
     for i in range(tallest_stack_height-1, -1, -1):
         for j in range(number_of_stacks):
             current_stack_height = len(stacks[j])
@@ -170,10 +171,14 @@ def apply_directions(stacks, directions):
         number_of_crates = int(direction[0])
         to_stack = int(direction[2])
         print(f"Moving {number_of_crates} crate(s) from Stack {from_stack} to {to_stack}\n")
-
+        # for i in range(number_of_crates):
+        #     move_stack.append(stacks[from_stack-1].pop())
+        # for i in range(number_of_crates):
+        #     stacks[to_stack-1].append(move_stack.pop())
         for i in range(number_of_crates):
             stacks[to_stack-1].append(stacks[from_stack-1].pop())
         print_stacks(stacks)
+    # print(move_stack)
     return stacks
 
 if __name__ == "__main__":
