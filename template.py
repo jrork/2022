@@ -51,9 +51,12 @@ def main():
 
     args = sys.argv[1:]
     if len(args) != 1:
-        print("Usage: " + sys.argv[0] + " inputfile");
-        return
-    filename = args[0]
+	filename = "/Users/jrork/Documents/Development/advent of code/2022/Day 6/Part 1/example.data"
+#	filename = "/Users/jrork/Documents/Development/advent of code/2022/Day 6/Part 1/example.data"
+#        print("Usage: " + sys.argv[0] + " inputfile");
+#        return
+    else:
+	filename = args[0]
     print("Input File:", filename)
     print()
 
@@ -62,6 +65,9 @@ def main():
     print(" Lines Read: ", len(lines))
     print()
     printLines(lines)
+    print()
+    print("-------------------------end of loadData--------------------")
+    print()
 
     # Do Part 1 work
     print()
